@@ -51,3 +51,40 @@ class Library {
             console.log(`Book "${removedBook.title}" removed from the library.`);
         } else {
             console.error(`Book with ISBN ${ISBN} not found, so it cannot be removed.`)}}};
+
+//Task 3 - Create a Patron Class
+
+class LibrarySection {
+    #sectionName;
+    #books;
+    constructor(sectionName) {
+        this.#sectionName = sectionName;
+        this.#books = []}; // Initialize an empty array to store books
+        // Getter for the section name
+    get sectionName() {
+        return this.#sectionName};
+    // Add a book to the section
+    addBookToSection(book) {
+        if (this.#books.some(b => b.ISBN === book.ISBN)) {
+            console.error(`Book with ISBN ${book.ISBN} already exists in section ${this.#sectionName}.`);
+            return false;  // Return false if book already exists
+        } else {
+            this.#books.push(book);
+            console.log(`Book "${book.title}" added to section ${this.#sectionName}.`);
+            return true}};//Return true if book was added
+    // Remove book from section by ISBN
+    removeBookFromSection(ISBN) {
+        const initialLength = this.#books.length;
+        this.#books = this.#books.filter(book => book.ISBN !== ISBN);// Filter books with given ISBN and update books array
+        if (this.#books.length < initialLength) {
+            console.log(`Book with ISBN ${ISBN} removed from section ${this.#sectionName}.`);
+            return true;  // Return true if book was removed
+        } else {
+            console.error(`Book with ISBN ${ISBN} not found in section ${this.#sectionName}.`);
+            return false}} // Return false if book wasn't found
+    listBooksInSection() {// List all books in section
+        if (this.#books.length === 0) {
+            console.log(`No books found in section ${this.#sectionName}.`);
+        } else {
+            console.log(`Books in section ${this.#sectionName}:`);
+            this.#books.forEach(book => console.log(`- ${book.title} (ISBN: ${book.ISBN})`))}}};
