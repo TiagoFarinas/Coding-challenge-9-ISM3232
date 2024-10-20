@@ -35,6 +35,10 @@ class Section {
             console.log(`Book "${book.getDetails()}" added to section ${this.#name}.`); // Confirm book addition
             return true}}; // Return true if book was added
     //Task 5 - Handle Books Borrowing and Returning
+    calculateTotalBooksAvailable() {
+        const availableBooksCount = this.getAvailableBooks();
+        console.log(`Total available books in section ${this.#name}: ${availableBooksCount}`);
+        return availableBooksCount};
     getAvailableBooks() {// Returns  total number of available books in  section
         return this.#books.filter(book => book.isAvailable).length}; // Returns the count of available books
     // Lists all books in section, showing title and availability
@@ -52,18 +56,18 @@ class Patron {
     constructor(name) {
         this.#name = name;
         this.#borrowedBooks = []}; // Initialize an array to store borrowed books
-    borrowBook(book) {// Allows patron to borrow book if it's available
+    borrowBook(book) { // Allows patron to borrow book if it's available
         if (book.isAvailable) {
             book.isAvailable = false; // Mark book as borrowed
             this.#borrowedBooks.push(book);
             console.log(`Patron "${this.#name}" borrowed "${book.getDetails()}".`); // Confirm borrowing
         } else {
             console.error(`"${book.getDetails()}" is not available for borrowing.`)}}; // Error if book is not available
-    returnBook(book) {// Allows patron to return borrowed book
-        const bookIndex = this.#borrowedBooks.indexOf(book);
-        if (bookIndex !== -1) {
+    returnBook(book) { // Allows patron to return borrowed book
+        const foundBook = this.#borrowedBooks.find(b => b === book); // Find the book in the borrowed list
+        if (foundBook) {
             book.isAvailable = true; // Mark book as available
-            this.#borrowedBooks.splice(bookIndex, 1);
+            this.#borrowedBooks = this.#borrowedBooks.filter(b => b !== book); // Filter out the returned book
             console.log(`Patron "${this.#name}" returned "${book.getDetails()}".`); // Confirm return
         } else {
             console.error(`"${book.getDetails()}" was not borrowed by "${this.#name}".`)}}}; // Error if book wasn't borrowed
@@ -79,7 +83,7 @@ class VIPPatron extends Patron {
             console.log(`VIP Patron "${this.name}" borrowed "${book.getDetails()}".`); // Confirm borrowing
         } else {
             console.error(`"${book.getDetails()}" is not available for borrowing.`)}}}; // Error if book is not available
-            
+
 // Task 6 - Create and Manage Sections and Patrons
 // Create sections
 const fiction = new Section("Fiction");
